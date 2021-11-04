@@ -16,6 +16,7 @@
 
 package com.example.android.eggtimernotifications.receiver
 
+import android.annotation.SuppressLint
 import android.app.AlarmManager
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -30,6 +31,7 @@ import androidx.core.content.ContextCompat
 class SnoozeReceiver: BroadcastReceiver() {
     private val REQUEST_CODE = 0
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     override fun onReceive(context: Context, intent: Intent) {
         val triggerTime = SystemClock.elapsedRealtime() + DateUtils.MINUTE_IN_MILLIS
 
@@ -47,6 +49,11 @@ class SnoozeReceiver: BroadcastReceiver() {
             triggerTime,
             notifyPendingIntent
         )
+        val notificationManager = ContextCompat.getSystemService(
+            context,
+            NotificationManager::class.java
+        ) as NotificationManager
+        notificationManager.cancelAll()
     }
 
 }

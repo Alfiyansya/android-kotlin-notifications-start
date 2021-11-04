@@ -30,7 +30,7 @@ import com.example.android.eggtimernotifications.receiver.SnoozeReceiver
 // Notification ID.
 private val NOTIFICATION_ID = 0
 private val REQUEST_CODE = 0
-private val FLAGS = 0
+private const val FLAGS = 0
 
 // TODO: Step 1.1 extension function to send messages (GIVEN)
 
@@ -39,7 +39,7 @@ private val FLAGS = 0
  *
  * @param context, activity context.
  */
-@SuppressLint("UnspecifiedImmutableFlag")
+@SuppressLint("UnspecifiedImmutableFlag", "WrongConstant")
 fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
     // Create the content intent for the notification, which launches
     // this activity
@@ -64,6 +64,13 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .bigLargeIcon(null)
 
     // TODO: Step 2.2 add snooze action
+    val snoozeIntent = Intent(applicationContext, SnoozeReceiver::class.java)
+    val snoozePendingIntent: PendingIntent = PendingIntent.getBroadcast(
+        applicationContext,
+        REQUEST_CODE,
+        snoozeIntent,
+        FLAGS
+    )
 
     // TODO: Step 1.2 get an instance of NotificationCompat.Builder
     // Build the notification
@@ -90,6 +97,11 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .setLargeIcon(eggImage)
 
     // TODO: Step 2.3 add snooze action
+        .addAction(
+            R.drawable.egg_icon,
+            applicationContext.getString(R.string.snooze),
+            snoozePendingIntent
+        )
 
     // TODO: Step 2.5 set priority
 
